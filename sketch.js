@@ -1,10 +1,10 @@
-var SIZE = 900;
-var NODES_PER_LINE = 30;
+var SIZE = 800;
+var NODES_PER_LINE = 20;
 var SIDE = SIZE / NODES_PER_LINE;
 var startX = 0;
 var startY = 0;
-var endX = 29;
-var endY = 29;
+var endX = 19;
+var endY = 19;
 var openNodes = [];
 var nodes = [];
 
@@ -19,17 +19,20 @@ function setup() {
         }
     }
 
-    let start = new Node(startX, startY, null);
-    let h = start.calcHeuristic(endX, endY);
-    start.updateF(h);
-    
     nodes[startX][startY] = -1;
     nodes[endX][endY] = 1;
-
-    openNodes.push(start);
 }
 
 function draw() {
+    if (mouseIsPressed) {
+        let x = Math.floor(mouseX / SIDE);
+        let y = Math.floor(mouseY / SIDE);
+
+        if (x >= 0 && x < NODES_PER_LINE && y >= 0 && y < NODES_PER_LINE) {
+            nodes[x][y] = -3;
+        }
+    }
+
     board();
 
     if (openNodes.length > 0) {
@@ -74,6 +77,8 @@ function board() {
                 fill(255, 0, 0);
             } else if (nodes[x][y] == 1) {
                 fill(0, 0, 255);
+            } else if (nodes[x][y] == -3) {
+                fill(0);
             } else {
                 fill(255);
             }
@@ -81,4 +86,16 @@ function board() {
             square(x * SIDE, y * SIDE, SIDE);
         }
     }
+}
+
+function start() {
+    let start = new Node(startX, startY, null);
+    let h = start.calcHeuristic(endX, endY);
+    start.updateF(h);
+
+    openNodes.push(start);
+}
+
+function keyPressed() {
+    start();
 }

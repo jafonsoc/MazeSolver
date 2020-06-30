@@ -10,9 +10,9 @@ class Node {
     }
 
     calcHeuristic(endX, endY) {
-        //let h = Math.sqrt(Math.abs(this.x - endX) ** 2 + Math.abs(this.y - endY) ** 2);
-        //return Math.floor(h);
-        return Math.abs(this.x - endX) + Math.abs(this.y - endY);
+        let h = Math.sqrt(Math.abs(this.x - endX) ** 2 + Math.abs(this.y - endY) ** 2);
+        return Math.floor(h);
+        //return Math.abs(this.x - endX) + Math.abs(this.y - endY);
     }
 
     updateF(h) {
