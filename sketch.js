@@ -1,6 +1,6 @@
-var SIZE = 600;
-var NUMBER_OF_NODES = 30;
-var SIDE = SIZE / NUMBER_OF_NODES;
+var SIZE = 900;
+var NODES_PER_LINE = 30;
+var SIDE = SIZE / NODES_PER_LINE;
 var startX = 0;
 var startY = 0;
 var endX = 29;
@@ -12,14 +12,19 @@ function setup() {
     createCanvas(SIZE, SIZE);
     background(0);
 
-    for(var i = 0; i < NUMBER_OF_NODES; i++) {
-        nodes[i] = new Array(NUMBER_OF_NODES);
+    for(let i = 0; i < NODES_PER_LINE; i++) {
+        nodes[i] = new Array(NODES_PER_LINE);
+        for (let j = 0; j < NODES_PER_LINE; j++) {
+            nodes[i][j] = 0;
+        }
     }
 
     let start = new Node(startX, startY, null);
-    nodes[startX][startY] = 1;
     let h = start.calcHeuristic(endX, endY);
     start.updateF(h);
+    
+    nodes[startX][startY] = -1;
+    nodes[endX][endY] = 1;
 
     openNodes.push(start);
 }
@@ -40,7 +45,6 @@ function draw() {
 
         if (node.x == endX && node.y == endY) {
             while (node != null) {
-                console.log(node);
                 nodes[node.x][node.y] = 2;
                 node = node.parent;
             }
@@ -51,7 +55,7 @@ function draw() {
             let newNodes = node.expand(nodes, endX, endY);
             
             for (let i = 0; i < newNodes.length; i++) {
-                nodes[newNodes[i].x][newNodes[i].y] = 1;
+                nodes[newNodes[i].x][newNodes[i].y] = -2;
                 openNodes.push(newNodes[i]);
             }
         }
@@ -60,12 +64,16 @@ function draw() {
 
 
 function board() {
-    for (let x = 0; x < NUMBER_OF_NODES; x++) {
-        for (let y = 0; y < NUMBER_OF_NODES; y++) {
-            if (nodes[x][y] == 1) {
+    for (let x = 0; x < NODES_PER_LINE; x++) {
+        for (let y = 0; y < NODES_PER_LINE; y++) {
+            if (nodes[x][y] == -2) {
                 fill(246, 255, 0);
             } else if (nodes[x][y] == 2) {
                 fill(40, 252, 3);
+            } else if (nodes[x][y] == -1) {
+                fill(255, 0, 0);
+            } else if (nodes[x][y] == 1) {
+                fill(0, 0, 255);
             } else {
                 fill(255);
             }

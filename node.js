@@ -10,8 +10,9 @@ class Node {
     }
 
     calcHeuristic(endX, endY) {
-        let h = Math.sqrt(Math.abs(this.x - endX) ** 2 + Math.abs(this.y - endY) ** 2);
-        return Math.floor(h);
+        //let h = Math.sqrt(Math.abs(this.x - endX) ** 2 + Math.abs(this.y - endY) ** 2);
+        //return Math.floor(h);
+        return Math.abs(this.x - endX) + Math.abs(this.y - endY);
     }
 
     updateF(h) {
@@ -24,14 +25,14 @@ class Node {
             let newX = this.x + i;
             let newY = this.y + i;
 
-            if (newX > 0 && newX < NUMBER_OF_NODES && nodes[newX][this.y] != 1) {
+            if (newX >= 0 && newX < NODES_PER_LINE && nodes[newX][this.y] >= 0) {
                 let newNode = new Node(newX, this.y, this);
                 let h = newNode.calcHeuristic(endX, endY);
                 newNode.updateF(h);
                 newNodes.push(newNode);
             }
 
-            if (newY > 0 && newY < NUMBER_OF_NODES && nodes[this.x][newY] != 1) {
+            if (newY >= 0 && newY < NODES_PER_LINE && nodes[this.x][newY] >= 0) {
                 let newNode = new Node(this.x, newY, this);
                 let h = newNode.calcHeuristic(endX, endY);
                 newNode.updateF(h);
