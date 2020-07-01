@@ -96,6 +96,3 @@ function start() {
     openNodes.push(start);
 }
 
-function keyPressed() {
-    start();
-}
